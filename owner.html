@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhuram Tiles - Owner Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e4e8;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            color: #2c3e50;
+            font-size: 28px;
+        }
+
+        .logo p {
+            color: #7f8c8d;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .form-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .cancel-btn {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.3);
+        }
+
+        .items-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #27ae60;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #e74c3c;
+        }
+
+        /* Responsive table */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-section, .items-section {
+                padding: 20px;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Madhuram Tiles</h1>
+                <p>Owner Dashboard</p>
+            </div>
+            <div class="user-info">
+                <span id="user-email"></span>
+                <button class="logout-btn" id="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="form-section">
+                <h2 id="form-title">Add New Item</h2>
+                <div id="message" class="message"></div>
+                <form id="item-form">
+                    <input type="hidden" id="item-id">
+                    <div class="form-group">
+                        <label for="name">Item Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price (₹)</label>
+                        <input type="number" id="price" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" min="0" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" id="submit-btn" class="add-btn">Add Item</button>
+                        <button type="button" id="cancel-btn" class="cancel-btn" style="display: none;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="items-section">
+                <h2>Inventory Items</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search items by name...">
+                </div>
+                <div class="table-container">
+                    <table id="items-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price (₹)</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-tbody">
+                            <!-- Items will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Updated Supabase configuration
+        const SUPABASE_URL = "https://tfzqehwkqgebvimqrfmw.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmenFlaHdrcWdlYnZpbXFyZm13Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1NTM4NjEsImV4cCI6MjA3OTEyOTg2MX0.GKLOtiC6ENQlniEpEXlbBG5KONUS10TB-fmygxlxJwc";
+
+        // Initialize Supabase client
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // DOM elements
+        const userEmailElement = document.getElementById('user-email');
+        const logoutBtn = document.getElementById('logout-btn');
+        const itemForm = document.getElementById('item-form');
+        const formTitle = document.getElementById('form-title');
+        const submitBtn = document.getElementById('submit-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const itemIdInput = document.getElementById('item-id');
+        const nameInput = document.getElementById('name');
+        const priceInput = document.getElementById('price');
+        const quantityInput = document.getElementById('quantity');
+        const itemsTbody = document.getElementById('items-tbody');
+        const searchInput = document.getElementById('search-input');
+        const messageElement = document.getElementById('message');
+
+        let isEditing = false;
+        let currentItems = [];
+
+        // Check authentication and load user data
+        async function checkAuth() {
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            userEmailElement.textContent = session.user.email;
+            loadItems();
+        }
+
+        // Load items from Supabase
+        async function loadItems() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('items')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    showMessage('Error loading items: ' + error.message, 'error');
+                    return;
+                }
+                
+                currentItems = data || [];
+                renderItems(currentItems);
+            } catch (err) {
+                showMessage('Error loading items', 'error');
+            }
+        }
+
+        // Render items in the table
+        function renderItems(items) {
+            itemsTbody.innerHTML = '';
+            
+            if (items.length === 0) {
+                itemsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px; color: #7f8c8d;">No items found</td></tr>';
+                return;
+            }
+            
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>₹${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn" data-id="${item.id}">Edit</button>
+                        <button class="delete-btn" data-id="${item.id}">Delete</button>
+                    </td>
+                `;
+                itemsTbody.appendChild(row);
+            });
+            
+            // Add event listeners to edit and delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editItem(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteItem(btn.dataset.id));
+            });
+        }
+
+        // Add or update item
+        itemForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = nameInput.value.trim();
+            const price = parseFloat(priceInput.value);
+            const quantity = parseInt(quantityInput.value);
+            const id = itemIdInput.value;
+            
+            if (!name || isNaN(price) || isNaN(quantity)) {
+                showMessage('Please fill all fields correctly', 'error');
+                return;
+            }
+            
+            try {
+                if (isEditing) {
+                    // Update existing item
+                    const { data, error } = await supabaseClient
+                        .from('items')
+                        .update({
+                            name,
+                            price,
+                            quantity,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', id);
+                    
+                    if (error) {
+                        showMessage('Error updating item: ' + error.message, 'error');
+                        return;
+                    }
+                    
+                    showMessage('Item updated successfully', 'success');
+                    resetForm();
+                } else {
+                    // Add new item
+                    const { data, error } = await supabaseClient
+                        .from('items')
+                        .insert([{ name, price, quantity }]);
+                    
+                    if (error) {
+                        showMessage('Error adding item: ' + error.message, 'error');
+                        return;
+                    }
+                    
+                    showMessage('Item added successfully', 'success');
+                    resetForm();
+                }
+                
+                loadItems();
+            } catch (err) {
+                showMessage('Error saving item', 'error');
+            }
+        });
+
+        // Edit item
+        function editItem(id) {
+            const item = currentItems.find(item => item.id == id);
+            if (!item) return;
+            
+            isEditing = true;
+            formTitle.textContent = 'Edit Item';
+            submitBtn.textContent = 'Update Item';
+            submitBtn.className = 'update-btn';
+            cancelBtn.style.display = 'inline-block';
+            
+            itemIdInput.value = item.id;
+            nameInput.value = item.name;
+            priceInput.value = item.price;
+            quantityInput.value = item.quantity;
+            
+            nameInput.focus();
+        }
+
+        // Delete item
+        async function deleteItem(id) {
+            if (!confirm('Are you sure you want to delete this item?')) return;
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('items')
+                    .delete()
+                    .eq('id', id);
+                
+                if (error) {
+                    showMessage('Error deleting item: ' + error.message, 'error');
+                    return;
+                }
+                
+                showMessage('Item deleted successfully', 'success');
+                loadItems();
+            } catch (err) {
+                showMessage('Error deleting item', 'error');
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            isEditing = false;
+            formTitle.textContent = 'Add New Item';
+            submitBtn.textContent = 'Add Item';
+            submitBtn.className = 'add-btn';
+            cancelBtn.style.display = 'none';
+            
+            itemForm.reset();
+            itemIdInput.value = '';
+        }
+
+        // Cancel editing
+        cancelBtn.addEventListener('click', resetForm);
+
+        // Search items
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredItems = currentItems.filter(item => 
+                item.name.toLowerCase().includes(searchTerm)
+            );
+            renderItems(filteredItems);
+        });
+
+        // Show message
+        function showMessage(text, type) {
+            messageElement.textContent = text;
+            messageElement.className = `message ${type}`;
+            messageElement.style.display = 'block';
+            
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'login.html';
+        });
+
+        // Initialize
+        checkAuth();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>
