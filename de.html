@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhuram Tiles - Browse Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .logo h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        @media (min-width: 768px) {
+            .filters {
+                grid-template-columns: 1fr 1fr 1fr auto;
+            }
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, select {
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            align-self: flex-end;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: "🏛️";
+            font-size: 3rem;
+            opacity: 0.8;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .product-quantity {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .quantity-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .low-stock {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .out-of-stock {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .stock-info {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .no-products p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .filters {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 28px;
+            }
+            
+            .filters {
+                padding: 20px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Madhuram Tiles</h1>
+                <p>Quality Tiles for Every Space</p>
+            </div>
+        </header>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="search">Search by Name</label>
+                <input type="text" id="search" placeholder="Enter product name...">
+            </div>
+            <div class="filter-group">
+                <label for="min-price">Min Price (₹)</label>
+                <input type="number" id="min-price" placeholder="Min price" min="0">
+            </div>
+            <div class="filter-group">
+                <label for="max-price">Max Price (₹)</label>
+                <input type="number" id="max-price" placeholder="Max price" min="0">
+            </div>
+            <div class="filter-group">
+                <label for="quantity-filter">Stock Status</label>
+                <select id="quantity-filter">
+                    <option value="all">All Items</option>
+                    <option value="in-stock">In Stock</option>
+                    <option value="low-stock">Low Stock</option>
+                    <option value="out-of-stock">Out of Stock</option>
+                </select>
+            </div>
+            <button class="search-btn" id="apply-filters">Apply Filters</button>
+        </div>
+        
+        <div class="products-grid" id="products-container">
+            <!-- Product cards will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Updated Supabase configuration
+        const SUPABASE_URL = "https://tfzqehwkqgebvimqrfmw.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmenFlaHdrcWdlYnZpbXFyZm13Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1NTM4NjEsImV4cCI6MjA3OTEyOTg2MX0.GKLOtiC6ENQlniEpEXlbBG5KONUS10TB-fmygxlxJwc";
+
+        // Initialize Supabase client
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // DOM elements
+        const searchInput = document.getElementById('search');
+        const minPriceInput = document.getElementById('min-price');
+        const maxPriceInput = document.getElementById('max-price');
+        const quantityFilter = document.getElementById('quantity-filter');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const productsContainer = document.getElementById('products-container');
+
+        let allItems = [];
+
+        // Load items from Supabase
+        async function loadItems() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('items')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    console.error('Error loading items:', error);
+                    return;
+                }
+                
+                allItems = data || [];
+                renderItems(allItems);
+            } catch (err) {
+                console.error('Error loading items:', err);
+            }
+        }
+
+        // Render items as product cards
+        function renderItems(items) {
+            productsContainer.innerHTML = '';
+            
+            if (items.length === 0) {
+                productsContainer.innerHTML = `
+                    <div class="no-products">
+                        <p>No products found matching your criteria</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            items.forEach(item => {
+                const stockStatus = getStockStatus(item.quantity);
+                const stockClass = getStockClass(item.quantity);
+                const stockText = getStockText(item.quantity);
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <!-- Tile image placeholder -->
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${item.name}</div>
+                        <div class="product-price">₹${item.price}</div>
+                        <div class="product-quantity">
+                            <span class="quantity-badge ${stockClass}">${stockText}</span>
+                        </div>
+                        <div class="stock-info">Available: ${item.quantity} units</div>
+                    </div>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        // Get stock status based on quantity
+        function getStockStatus(quantity) {
+            if (quantity === 0) return 'out-of-stock';
+            if (quantity < 10) return 'low-stock';
+            return 'in-stock';
+        }
+
+        // Get stock class for styling
+        function getStockClass(quantity) {
+            const status = getStockStatus(quantity);
+            return status;
+        }
+
+        // Get stock text for display
+        function getStockText(quantity) {
+            const status = getStockStatus(quantity);
+            switch (status) {
+                case 'out-of-stock': return 'Out of Stock';
+                case 'low-stock': return 'Low Stock';
+                case 'in-stock': return 'In Stock';
+                default: return 'Unknown';
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const minPrice = minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+            const maxPrice = maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+            const quantityFilterValue = quantityFilter.value;
+            
+            const filteredItems = allItems.filter(item => {
+                // Search filter
+                if (searchTerm && !item.name.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Price filter
+                if (item.price < minPrice || item.price > maxPrice) {
+                    return false;
+                }
+                
+                // Quantity filter
+                if (quantityFilterValue !== 'all') {
+                    const stockStatus = getStockStatus(item.quantity);
+                    if (quantityFilterValue === 'in-stock' && stockStatus !== 'in-stock') {
+                        return false;
+                    }
+                    if (quantityFilterValue === 'low-stock' && stockStatus !== 'low-stock') {
+                        return false;
+                    }
+                    if (quantityFilterValue === 'out-of-stock' && stockStatus !== 'out-of-stock') {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            renderItems(filteredItems);
+        }
+
+        // Event listeners
+        applyFiltersBtn.addEventListener('click', applyFilters);
+
+        // Apply filters when Enter is pressed in search
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+
+        // Initialize
+        loadItems();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>
